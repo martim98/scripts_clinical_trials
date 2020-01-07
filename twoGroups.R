@@ -33,15 +33,19 @@ t.test()
 ## power of test
 power.t.test()
 library(pwr)
-pwr.t2n.test()
+
+diff <-
+sd <-
+effect <- diff/sd
+pwr.t2n.test(n1, n2, d = effect, power)
 
 ## wilcoxon
 library(coin)
 
 dataVector1 <- c()
 dataVector2 <- c()
-factor1 <- factor(rep(c('col1', 'col2'), c(lenght(dataVector1), length(dataVector2))))
-df <- data.frame()
+factor1 <- factor(rep(c('col1', 'col2'), c(length(dataVector1), length(dataVector2))))
+df <- data.frame(c(dataVector1, dataVector2), factor1)
 colnames(df) <-c()
 
 wilcox.test(col1 ~ col2, data =, exact = T,
@@ -64,14 +68,14 @@ wilcox.exact(ham1,ham2,alternative="greater",paired=TRUE)
 ######################################################################
 
 ## Data (no need for totals)
-mtr <- matrix()
+mtr <- matrix(, nrow = 2, byrow = T)
 colnames(mtr) <- c()
 rownames(mtr) <- c()
 
 ## proportion tests
 ## extract cases and totals
-x <- mtr[] #expect vector of cases
-n <- mtr[] #expect vector of totals
+x <- c(mtr[1], mtr[4]) #expect vector of cases
+n <- c(mtr[3], mtr[6]) #expect vector of totals
 
 prop.test(x, n, correct=F) #continuity correction not needed
 
