@@ -225,5 +225,16 @@ plot(tukeyModel)
 
 
 
+func <- function(A,B,C,D,E){
+  a <- t.test(A, B)$p.value
+  b <- t.test(A, C)$p.value
+  c <- t.test(A, D)$p.value
+  d <- t.test(A, E)$p.value
+  
+  data <- data.frame(c('A-B', 'A-C', 'A-D', 'A-E'),
+                     p.adjust(c(a,b,c,d), method = 'bonferroni'))
+  colnames(data) <- c('t.test', 'p value Bonferroni' )
+  return(data)
+}
 
 
