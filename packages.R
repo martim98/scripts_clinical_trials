@@ -6,4 +6,5 @@ install.packages('car')
 install.packages('lmtest')
 install.packages('multcomp')
 install.packages('mvtnorm')
+install.packages('openxlsx')
 

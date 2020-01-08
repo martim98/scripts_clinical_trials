@@ -1,3 +1,6 @@
+######################################################################
+                    ## WORK SHEET 2###
+######################################################################
 library(pwr)
 
 sd <- sqrt(0.52)
@@ -100,6 +103,126 @@ power.t.test(delta = 0.2, sd = pooledVariance, power = 0.9)
 dimdifs(0.45, 0.25, 0.2, 0.05, 0.9, 2)
 
 # n1 should be at least 95 and n2 should be 189
+
+
+######################################################################
+                    ##WORK SHEET 3###
+######################################################################
+
+## 6.1.1
+
+antes <- c(70,80, 72, 76, 76, 76, 72, 78, 82, 64, 74, 92, 74, 68, 84)
+depois <- c(68, 72, 62, 70, 58, 66, 68, 52, 64, 72, 74, 60, 74, 72, 74)
+
+d <- antes - depois
+sd <- sd(d)
+
+## sample of differences computed
+## check for normality assumption
+
+qqnorm(d)
+qqline(d)
+
+shapiro.test(d)
+
+## p value > 0.05 (0.6428), we dont reject H0 we assume normality of d sample
+t.test(d)
+t.test(antes, depois, paired = TRUE)
+## p value = 0.007749, we reject H0 there is considerable evidence that the new drug reduces systolic blood pressure
+## IC =  ]2.72, 14.88[
+
+## power a)
+
+power.t.test(n = 15, delta = mean(antes) - mean(depois), sd = sd, type = 'paired')
+pwr.t.test(n = 15, d = (mean(antes) - mean(depois)) / sd, type = 'paired') 
+
+# power = 0.822
+
+## power b)
+power.t.test( delta = 5, sd = sd, power = 0.9, type = 'paired')
+
+# n = 53
+
+## 6.1.2
+df <- read.delim('Ex612.txt')
+df$Ind <- NULL
+d <- df$Ocasiao1 - df$Ocasiao2
+# check for normality
+qqnorm(d)
+qqline(d)
+shapiro.test(d)
+sd <- sd(d)
+# p value > 0.05 we cannot reject normality assumption
+
+t.test(d)
+
+# p value = 0.01618, for alpha >0.01618 we reject H0 and conclude there are differences
+# IC ]0.10, 0.76[ we conclude at 95% confidence that the treatment reduced the score for drepression
+
+## 6.2.1
+## paired sample, qualitative response, mcNemar
+
+mtr <- matrix(c(11, 37, 20, 28), nrow = 2, byrow = T)
+mcnemar.test(mtr)
+
+## p value = 0.03407, we reject H0, conclude that there is evidence to assume that the
+## treatments are different
+
+power.prop.test(p1 = 0.5, p2 = 0.20, power = 0.8)
+# n should be at leat 39
+
+######################################################################
+                    ## WORK SHEET 4##
+######################################################################
+
+# 7.1.1 Analysis of variance
+
+#data and df formulation
+
+A <- c(7, 7, 15, 11, 9)
+B <- c(12, 17, 12, 18, 18)
+C <- c(14, 18, 18, 19, 19)
+D <- c(19, 25, 22, 19, 23)
+E <- c(7, 10, 11, 15, 11)
+
+finalVector <- c(A, B, C, D, E)
+factor1 <- factor(rep(c('A', 'B', 'C', 'D', 'E'), c(length(A), length(B), length(C), length(D), length(E))))
+df <- data.frame(finalVector, factor1)
+df
+model <- aov(finalVector ~ factor1, data = df)
+summary(model)
+
+# p value < 0.05 
+# Assumption validation
+# normality 
+library(car)
+qqnorm(model$res)
+qqline(model$res)
+qqPlot(model$res)
+boxplot(model$res)
+
+plot(fitted(model), model$res)
+boxplot(model$res ~ factor1)
+
+shapiro.test(model$res)
+
+# we do not reject normality with shapiro test
+
+# variances
+bartlett.test(finalVector, factor1)
+library(car)
+leveneTest(finalVector, factor1)
+# p value of both test > 0.05, variances assumed
+
+## post Hoc comparisations,
+## asumptions validated
+## tukey multiple comparisations
+
+tukeyModel <- TukeyHSD(model, conf.level = 0.95)
+tukeyModel
+plot(tukeyModel)
+
+
 
 
 

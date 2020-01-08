@@ -13,7 +13,7 @@ D <- c()
 E <- c()
 
 finalVector <- c(A, B, C, D, E)
-factor1 <- factor(rep(c(), c(length(A), length(B), length(C), length(D), lenght(E))))
+factor1 <- factor(rep(c('A', 'B', 'C', 'D', 'E'), c(length(A), length(B), length(C), length(D), length(E))))
 
 df <- data.frame(finalVector, factor1)
 
